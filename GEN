@@ -1,0 +1,17 @@
+cat header.html > index.html
+for i in `ls -1 --sort=time -r ../*.scale.jpg | sed -e 's#../\(.*\).scale.jpg#\1#g'`; do
+	if ! [ -f .$i.xscale.jpg ]; then
+		echo "...$i..."
+		convert -resize 800x600 -quality 95 $i.jpg .$i.xscale.jpg
+	fi
+	echo '<a href="'$i.scale.jpg'"><img src="'.$i.xscale.jpg'"></a><br>' >> index.html
+	echo "&quot;$i&quot;<br>" >> index.html
+	DESC=$(grep $i .htaccess | head -n1 | cut -d\" -f2)
+	if ! [ -z "$DESC" ]; then
+		echo "<i>$DESC</i><br>" >> index.html
+	fi
+	echo '(<a href="'$i.scale.jpg'">'`jhead $i.scale.jpg | grep Resolution | sed -e 's/.*: \(.*\) x \(.*\)/\1x\2/'`'</a>,'\
+	     '<a href="'$i.jpg'">'`jhead $i.jpg | grep Resolution | sed -e 's/.*: \(.*\) x \(.*\)/\1x\2/'`'</a>)' >> index.html
+	echo '<br><br>' >> index.html
+done
+cat footer.html >> index.html
