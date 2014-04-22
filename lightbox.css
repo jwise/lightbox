@@ -1,0 +1,23 @@
+.photo img {
+  border: 2 solid #aaaaaa;
+  margin-bottom: .3em;
+}
+
+.photo.half img {
+  width: 40%;
+  height: auto;
+}
+
+.photo .caption {
+  font-weight: bold;
+}
+
+.photo .sizes {
+  font-size: 0.8em;
+  display: block;
+}
+
+.photo {
+  margin-top: 1.5em;
+  margin-bottom: 4em;
+}

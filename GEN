@@ -31,6 +31,6 @@ for i in `ls -1 --sort=time -r *.jpg | sed -e 's/.jpg$//'`; do
 	if ! [ -f scale/$i.xscale@2x.jpg ]; then
 		convert -resize $SIZE3 -quality 95 $i.jpg scale/$i.xscale@2x.jpg
 	fi
-	echo '<a href="'scale/$i.scale.jpg'"><img border=2 src="'scale/$i.xscale.jpg'"></a><br>(<a href="'scale/$i.scale.jpg'">'$(res scale/$i.scale.jpg)'</a>, <a href="'$i.jpg'">'$(res $i.jpg)'</a>)<br><br>' >> index.html
+	echo '<div class="photo"><a href="'scale/$i.scale.jpg'"><img src="'scale/$i.xscale.jpg'"></a><div class="sizes">(<a href="'scale/$i.scale.jpg'">'$(res scale/$i.scale.jpg)'</a>, <a href="'$i.jpg'">'$(res $i.jpg)'</a>)</div></div>' >> index.html
 done
 cat footer.html >> index.html
