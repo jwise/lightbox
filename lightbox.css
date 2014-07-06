@@ -1,3 +1,10 @@
+.words {
+  max-width: 650px;
+  text-align: left;
+  text-align: justify;
+  text-justify: newspaper;
+}
+
 .photo img {
   border: 2 solid #aaaaaa;
   margin-bottom: .3em;
@@ -20,4 +27,32 @@
 .photo {
   margin-top: 1.5em;
   margin-bottom: 4em;
+}
+
+.gps {
+  font-size: 0.8em;
+  font-style: italic;
+  margin-top: 0.2em;
+}
+
+.comment {
+  font-size: 0.8em;
+  margin-top: 0.2em;
+}
+
+hr {
+  border: 0;
+  height: 3px;
+  color: #444;
+  background-color: #444;
+  max-width: 900px;
+  margin-top: -0.5em;
+  margin-bottom: 4em;
+}
+
+.precomment {
+  font-size: 0.9em;
+  margin-top: -0.5em;
+  margin-bottom: 5em;
+  font-style: italic;
 }

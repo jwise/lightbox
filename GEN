@@ -6,6 +6,25 @@ function portrait() {
 	[ `jhead $1 | grep Resolution | sed -e 's/.*: \(.*\) x \(.*\)/\1 -lt \2/'` ]
 }
 
+function hasgps() {
+	! [ -z "$(jhead $1 | grep 'GPS Lat' | grep -v '?')" ]
+}
+
+function urlme() {
+	echo "$1" | \
+		sed -e 's/&deg;/%B0/g' | \
+		sed -e "s/'/%27/g" | \
+		sed -e 's/ /%20/g' | \
+		sed -e 's/"/%22/g'
+}
+
+function latlon() {
+	LAT=$(jhead $1 | grep 'GPS Lat' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4" \1/')
+	LON=$(jhead $1 | grep 'GPS Lon' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4" \1/')
+	LL="$LAT, $LON"
+	echo '<a href="https://maps.google.com/maps?q='$(urlme "$LL")'">'$LL'</a>'
+}
+
 cat header.html > index.html
 for i in `ls -1 --sort=time -r *.jpg | sed -e 's/.jpg$//'`; do
 	echo "$i..."
@@ -31,6 +50,22 @@ for i in `ls -1 --sort=time -r *.jpg | sed -e 's/.jpg$//'`; do
 	if ! [ -f scale/$i.xscale@2x.jpg ]; then
 		convert -resize $SIZE3 -quality 95 $i.jpg scale/$i.xscale@2x.jpg
 	fi
-	echo '<div class="photo"><a href="'scale/$i.scale.jpg'"><img src="'scale/$i.xscale.jpg'"></a><div class="sizes">(<a href="'scale/$i.scale.jpg'">'$(res scale/$i.scale.jpg)'</a>, <a href="'$i.jpg'">'$(res $i.jpg)'</a>)</div></div>' >> index.html
+	if [ -f "$i.pre" ]; then
+		cat $i.pre >> index.html
+	fi
+	echo '<div class="photo">' >> index.html
+	echo '  <a href="'scale/$i.scale.jpg'"><img src="'scale/$i.xscale.jpg'"></a>' >> index.html
+	if [ -f "$i.desc" ]; then
+		echo '  <div class="comment">'$(cat $i.desc)'</div>' >> index.html
+	fi
+	if hasgps $i.jpg; then
+		echo '  <div class="gps">'$(latlon $i.jpg)'</div>' >> index.html
+	fi
+	echo '  <div class="sizes">(<a href="'scale/$i.scale.jpg'">'$(res scale/$i.scale.jpg)'</a>, <a href="'$i.jpg'">'$(res $i.jpg)'</a>)</div>' >> index.html
+	echo '</div>' >> index.html
+	if [ -f "$i.post" ]; then
+		cat $i.post >> index.html
+	fi
+
 done
 cat footer.html >> index.html
