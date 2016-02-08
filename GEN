@@ -12,15 +12,19 @@ function hasgps() {
 
 function urlme() {
 	echo "$1" | \
-		sed -e 's/&deg;/%B0/g' | \
+		sed -e 's/&deg;/%C2%B0/g' | \
 		sed -e "s/'/%27/g" | \
 		sed -e 's/ /%20/g' | \
 		sed -e 's/"/%22/g'
 }
 
+function ptime() {
+	jhead $1 | grep 'Date/Time' | sed -e 's/.*: \(....\):\(..\):\(..\) \(..\):\(..\):\(..\)/\4:\5, \1-\2-\3/'
+}
+
 function latlon() {
-	LAT=$(jhead $1 | grep 'GPS Lat' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4" \1/')
-	LON=$(jhead $1 | grep 'GPS Lon' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4" \1/')
+	LAT=$(jhead $1 | grep 'GPS Lat' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \1/')
+	LON=$(jhead $1 | grep 'GPS Lon' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \1/')
 	LL="$LAT, $LON"
 	echo '<a href="https://maps.google.com/maps?q='$(urlme "$LL")'">'$LL'</a>'
 }
@@ -58,6 +62,7 @@ for i in `ls -1 --sort=time -r *.jpg | sed -e 's/.jpg$//'`; do
 	if [ -f "$i.desc" ]; then
 		echo '  <div class="comment">'$(cat $i.desc)'</div>' >> index.html
 	fi
+        echo '  <div class="time">'$(ptime $i.jpg)'</div>' >> index.html
 	if hasgps $i.jpg; then
 		echo '  <div class="gps">'$(latlon $i.jpg)'</div>' >> index.html
 	fi

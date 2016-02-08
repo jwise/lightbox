@@ -5,6 +5,15 @@
   text-justify: newspaper;
 }
 
+.postwords {
+  max-width: 650px;
+  margin-top: -3em;
+  margin-bottom: 2em;
+  text-align: left;
+  text-align: justify;
+  text-justify: newspaper;
+}
+
 .photo img {
   border: 2 solid #aaaaaa;
   margin-bottom: .3em;
@@ -30,6 +39,12 @@
 }
 
 .gps {
+  font-size: 0.8em;
+  font-style: italic;
+  margin-top: 0.2em;
+}
+
+.time {
   font-size: 0.8em;
   font-style: italic;
   margin-top: 0.2em;
