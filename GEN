@@ -1,3 +1,7 @@
+# 20160426 -- full-res is now the default for clickables
+
+[ -z "$BASH_VERSION" ] && { echo 'not running in bash?' 2>&1; exit 1; } 
+
 function res() {
 	jhead $1 | grep Resolution | sed -e 's/.*: \(.*\) x \(.*\)/\1x\2/'
 }
@@ -23,8 +27,8 @@ function ptime() {
 }
 
 function latlon() {
-	LAT=$(jhead $1 | grep 'GPS Lat' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \1/')
-	LON=$(jhead $1 | grep 'GPS Lon' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \1/')
+	LAT=$(jhead $1 | grep 'GPS Lat' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4\&quot; \1/')
+	LON=$(jhead $1 | grep 'GPS Lon' | sed -e 's/.*: \(.\) \(.*\)d \(.*\)m \(.*\)s/\2\&deg; \3'"'"' \4\&quot; \1/')
 	LL="$LAT, $LON"
 	echo '<a href="https://maps.google.com/maps?q='$(urlme "$LL")'">'$LL'</a>'
 }
@@ -54,11 +58,13 @@ for i in `ls -1 --sort=time -r *.jpg | sed -e 's/.jpg$//'`; do
 	if ! [ -f scale/$i.xscale@2x.jpg ]; then
 		convert -resize $SIZE3 -quality 95 $i.jpg scale/$i.xscale@2x.jpg
 	fi
+        echo '<div class="photopre">' >> index.html
 	if [ -f "$i.pre" ]; then
 		cat $i.pre >> index.html
 	fi
+        echo '</div>' >> index.html
 	echo '<div class="photo">' >> index.html
-	echo '  <a href="'scale/$i.scale.jpg'"><img src="'scale/$i.xscale.jpg'"></a>' >> index.html
+	echo '  <a href="'$i.jpg'"><img src="'scale/$i.xscale.jpg'"></a>' >> index.html
 	if [ -f "$i.desc" ]; then
 		echo '  <div class="comment">'$(cat $i.desc)'</div>' >> index.html
 	fi

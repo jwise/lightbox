@@ -5,6 +5,10 @@
   text-justify: newspaper;
 }
 
+.photopre .words {
+  margin-top: -1.5em;
+}
+
 .postwords {
   max-width: 650px;
   margin-top: -3em;
