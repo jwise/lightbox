@@ -23,6 +23,11 @@
   margin-bottom: .3em;
 }
 
+.photo iframe {
+  border: 2 solid #aaaaaa;
+  margin-bottom: .3em;
+}
+
 .photo.half img {
   width: 40%;
   height: auto;
