@@ -1,3 +1,4 @@
+#!/bin/bash
 # 20160426 -- full-res is now the default for clickables
 
 [ -z "$BASH_VERSION" ] && { echo 'not running in bash?' 2>&1; exit 1; } 
