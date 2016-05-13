@@ -27,6 +27,7 @@ The approximate state of the art right now is to do something like:
   * `.desc` files are one-liners that describe a single image.
   * `.post` files get inserted immediately after an image (good for section dividers).
   * `.pre` files go right above an image, in a `photopre` class.  So use `<div class="words">` surrounding text that you want to go before an image if you have a longer-form description.
+* Modify `GENRC` as needed.
 * Invoke `GEN`.
 * Tweak all of your surrounding files, and continue to invoke `GEN`.  Already scaled images will be reused.
 
